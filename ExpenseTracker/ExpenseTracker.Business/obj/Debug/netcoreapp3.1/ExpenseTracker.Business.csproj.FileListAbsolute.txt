@@ -1,0 +1,8 @@
+D:\masters\Asd\ExpenseTracker\ExpenseTracker.Business\bin\Debug\netcoreapp3.1\ExpenseTracker.Business.deps.json
+D:\masters\Asd\ExpenseTracker\ExpenseTracker.Business\bin\Debug\netcoreapp3.1\ExpenseTracker.Business.dll
+D:\masters\Asd\ExpenseTracker\ExpenseTracker.Business\bin\Debug\netcoreapp3.1\ExpenseTracker.Business.pdb
+D:\masters\Asd\ExpenseTracker\ExpenseTracker.Business\obj\Debug\netcoreapp3.1\ExpenseTracker.Business.AssemblyInfoInputs.cache
+D:\masters\Asd\ExpenseTracker\ExpenseTracker.Business\obj\Debug\netcoreapp3.1\ExpenseTracker.Business.AssemblyInfo.cs
+D:\masters\Asd\ExpenseTracker\ExpenseTracker.Business\obj\Debug\netcoreapp3.1\ExpenseTracker.Business.dll
+D:\masters\Asd\ExpenseTracker\ExpenseTracker.Business\obj\Debug\netcoreapp3.1\ExpenseTracker.Business.pdb
+D:\masters\Asd\ExpenseTracker\ExpenseTracker.Business\obj\Debug\netcoreapp3.1\ExpenseTracker.Business.csprojAssemblyReference.cache
