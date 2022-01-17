@@ -24,6 +24,8 @@
     ".NETCoreApp,Version=v3.1": {
       "ExpenseTracker/1.0.0": {
         "dependencies": {
+          "ExpenseTracker.Business": "1.0.0",
+          "ExpenseTracker.Infrastructure": "1.0.0",
           "Microsoft.EntityFrameworkCore.SqlServer": "3.1.21",
           "Microsoft.EntityFrameworkCore.Sqlite": "3.1.21",
           "Microsoft.EntityFrameworkCore.Tools": "3.1.21",
@@ -294,6 +296,20 @@
         },
         "compile": {
           "ExpenseTracker.dll": {}
+        }
+      },
+      "AutoMapper/11.0.0": {
+        "dependencies": {
+          "Microsoft.CSharp": "4.7.0"
+        },
+        "runtime": {
+          "lib/netstandard2.1/AutoMapper.dll": {
+            "assemblyVersion": "11.0.0.0",
+            "fileVersion": "11.0.0.0"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.1/AutoMapper.dll": {}
         }
       },
       "Microsoft.AspNetCore.Html.Abstractions/2.2.0": {
@@ -2444,6 +2460,39 @@
           "System.Xml.XmlDocument": "4.3.0"
         }
       },
+      "ExpenseTracker.Business/1.0.0": {
+        "dependencies": {
+          "AutoMapper": "11.0.0",
+          "ExpenseTracker.Domain": "1.0.0"
+        },
+        "runtime": {
+          "ExpenseTracker.Business.dll": {}
+        },
+        "compile": {
+          "ExpenseTracker.Business.dll": {}
+        }
+      },
+      "ExpenseTracker.Domain/1.0.0": {
+        "runtime": {
+          "ExpenseTracker.Domain.dll": {}
+        },
+        "compile": {
+          "ExpenseTracker.Domain.dll": {}
+        }
+      },
+      "ExpenseTracker.Infrastructure/1.0.0": {
+        "dependencies": {
+          "ExpenseTracker.Domain": "1.0.0",
+          "Microsoft.EntityFrameworkCore.SqlServer": "3.1.21",
+          "Microsoft.EntityFrameworkCore.Sqlite": "3.1.21"
+        },
+        "runtime": {
+          "ExpenseTracker.Infrastructure.dll": {}
+        },
+        "compile": {
+          "ExpenseTracker.Infrastructure.dll": {}
+        }
+      },
       "Microsoft.AspNetCore.Antiforgery/3.1.0.0": {
         "compile": {
           "Microsoft.AspNetCore.Antiforgery.dll": {}
@@ -4006,6 +4055,13 @@
       "serviceable": false,
       "sha512": ""
     },
+    "AutoMapper/11.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-+596AnKykYCk9RxXCEF4GYuapSebQtFVvIA1oVG1rrRkCLAC7AkWehJ0brCfYUbdDW3v1H/p0W3hob7JoXGjMw==",
+      "path": "automapper/11.0.0",
+      "hashPath": "automapper.11.0.0.nupkg.sha512"
+    },
     "Microsoft.AspNetCore.Html.Abstractions/2.2.0": {
       "type": "package",
       "serviceable": true,
@@ -5230,6 +5286,21 @@
       "sha512": "sha512-MYoTCP7EZ98RrANESW05J5ZwskKDoN0AuZ06ZflnowE50LTpbR5yRg3tHckTVm5j/m47stuGgCrCHWePyHS70Q==",
       "path": "system.xml.xmlserializer/4.3.0",
       "hashPath": "system.xml.xmlserializer.4.3.0.nupkg.sha512"
+    },
+    "ExpenseTracker.Business/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "ExpenseTracker.Domain/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "ExpenseTracker.Infrastructure/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
     },
     "Microsoft.AspNetCore.Antiforgery/3.1.0.0": {
       "type": "referenceassembly",

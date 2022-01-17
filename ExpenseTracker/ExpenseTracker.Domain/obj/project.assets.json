@@ -14,11 +14,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\masters\\Asd\\ExpenseTracker\\ExpenseTracker.Domain\\ExpenseTracker.Domain.csproj",
+      "projectUniqueName": "D:\\masters\\ASD\\project\\ExpenseTracker\\ExpenseTracker.Domain\\ExpenseTracker.Domain.csproj",
       "projectName": "ExpenseTracker.Domain",
-      "projectPath": "D:\\masters\\Asd\\ExpenseTracker\\ExpenseTracker.Domain\\ExpenseTracker.Domain.csproj",
+      "projectPath": "D:\\masters\\ASD\\project\\ExpenseTracker\\ExpenseTracker.Domain\\ExpenseTracker.Domain.csproj",
       "packagesPath": "C:\\Users\\INOVA\\.nuget\\packages\\",
-      "outputPath": "D:\\masters\\Asd\\ExpenseTracker\\ExpenseTracker.Domain\\obj\\",
+      "outputPath": "D:\\masters\\ASD\\project\\ExpenseTracker\\ExpenseTracker.Domain\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ExpenseTracker.Domain.Models
 {
-    public class Transaction
+    public class Transactions
     {
         public int Id { get; set; }
         public double Amount { get; set; }

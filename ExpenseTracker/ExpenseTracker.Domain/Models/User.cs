@@ -9,7 +9,7 @@ namespace ExpenseTracker.Domain.Models
         public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public virtual List<Transaction> Transaction { get; set; }
+        public virtual List<Transactions> Transaction { get; set; }
 
     }
 }

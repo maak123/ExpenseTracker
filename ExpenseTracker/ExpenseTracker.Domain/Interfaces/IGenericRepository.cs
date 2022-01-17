@@ -74,6 +74,7 @@ namespace ExpenseTracker.Domain.Interfaces
         void Save();
 
         Task<int> SaveAsync();
+        public Task CompleteAsync();
 
         void Dispose();
 

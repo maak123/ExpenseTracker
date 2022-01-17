@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using ExpenseTracker.Data;
-using ExpenseTracker.Domain.Models;
+using ExpenseTracker.Business.Core;
+using ExpenseTracker.Business.Resources;
 
 namespace ExpenseTracker.Controllers
 {
@@ -14,25 +14,25 @@ namespace ExpenseTracker.Controllers
     [ApiController]
     public class CategoriesController : ControllerBase
     {
-        private readonly ExpenseTrackerContext _context;
+        private readonly ICategoryService _categoryService;
 
-        public CategoriesController(ExpenseTrackerContext context)
+        public CategoriesController(ICategoryService categoryService)
         {
-            _context = context;
+            _categoryService = categoryService;
         }
 
         // GET: api/Categories
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Category>>> GetCategory()
+        public async Task<ActionResult<IEnumerable<CategoryResource>>> GetCategory()
         {
-            return await _context.Category.ToListAsync();
+            return Ok(await _categoryService.GetAllAsync());
         }
 
         // GET: api/Categories/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Category>> GetCategory(int id)
+        public async Task<ActionResult<CategoryResource>> GetCategory(int id)
         {
-            var category = await _context.Category.FindAsync(id);
+            var category = await _categoryService.GetByIdAsync(id);
 
             if (category == null)
             {
@@ -46,29 +46,23 @@ namespace ExpenseTracker.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCategory(int id, Category category)
+        public async Task<IActionResult> PutCategory(int id, CategoryResource category)
         {
             if (id != category.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(category).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                var result = await _categoryService.EditAsync(category);
+
+                return Ok(result);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CategoryExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
+              
                     throw;
-                }
             }
 
             return NoContent();
@@ -78,33 +72,22 @@ namespace ExpenseTracker.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Category>> PostCategory(Category category)
+        public async Task<ActionResult<CategoryResource>> PostCategory(CategoryResource category)
         {
-            _context.Category.Add(category);
-            await _context.SaveChangesAsync();
+          
+            await _categoryService.CreateAsync(category);
 
             return CreatedAtAction("GetCategory", new { id = category.Id }, category);
         }
 
         // DELETE: api/Categories/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Category>> DeleteCategory(int id)
+        public async Task<ActionResult<CategoryResource>> DeleteCategory(int id)
         {
-            var category = await _context.Category.FindAsync(id);
-            if (category == null)
-            {
-                return NotFound();
-            }
 
-            _context.Category.Remove(category);
-            await _context.SaveChangesAsync();
-
-            return category;
+           
+            return Ok(await _categoryService.RemoveAsync(id));
         }
 
-        private bool CategoryExists(int id)
-        {
-            return _context.Category.Any(e => e.Id == id);
-        }
     }
 }

@@ -2,6 +2,18 @@
   "version": 3,
   "targets": {
     ".NETCoreApp,Version=v3.1": {
+      "AutoMapper/11.0.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.CSharp": "4.7.0"
+        },
+        "compile": {
+          "lib/netstandard2.1/AutoMapper.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.1/AutoMapper.dll": {}
+        }
+      },
       "Microsoft.AspNetCore.Html.Abstractions/2.2.0": {
         "type": "package",
         "dependencies": {
@@ -2818,10 +2830,64 @@
         "runtime": {
           "lib/netstandard1.3/System.Xml.XmlSerializer.dll": {}
         }
+      },
+      "ExpenseTracker.Business/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v3.1",
+        "dependencies": {
+          "AutoMapper": "11.0.0",
+          "ExpenseTracker.Domain": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/ExpenseTracker.Business.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ExpenseTracker.Business.dll": {}
+        }
+      },
+      "ExpenseTracker.Domain/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v3.1",
+        "compile": {
+          "bin/placeholder/ExpenseTracker.Domain.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ExpenseTracker.Domain.dll": {}
+        }
+      },
+      "ExpenseTracker.Infrastructure/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v3.1",
+        "dependencies": {
+          "ExpenseTracker.Domain": "1.0.0",
+          "Microsoft.EntityFrameworkCore.SqlServer": "3.1.21",
+          "Microsoft.EntityFrameworkCore.Sqlite": "3.1.21"
+        },
+        "compile": {
+          "bin/placeholder/ExpenseTracker.Infrastructure.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ExpenseTracker.Infrastructure.dll": {}
+        }
       }
     }
   },
   "libraries": {
+    "AutoMapper/11.0.0": {
+      "sha512": "+596AnKykYCk9RxXCEF4GYuapSebQtFVvIA1oVG1rrRkCLAC7AkWehJ0brCfYUbdDW3v1H/p0W3hob7JoXGjMw==",
+      "type": "package",
+      "path": "automapper/11.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "automapper.11.0.0.nupkg.sha512",
+        "automapper.nuspec",
+        "icon.png",
+        "lib/netstandard2.1/AutoMapper.dll",
+        "lib/netstandard2.1/AutoMapper.xml"
+      ]
+    },
     "Microsoft.AspNetCore.Html.Abstractions/2.2.0": {
       "sha512": "Y4rs5aMEXY8G7wJo5S3EEt6ltqyOTr/qOeZzfn+hw/fuQj5GppGckMY5psGLETo1U9hcT5MmAhaT5xtusM1b5g==",
       "type": "package",
@@ -8981,10 +9047,27 @@
         "system.xml.xmlserializer.4.3.0.nupkg.sha512",
         "system.xml.xmlserializer.nuspec"
       ]
+    },
+    "ExpenseTracker.Business/1.0.0": {
+      "type": "project",
+      "path": "../ExpenseTracker.Business/ExpenseTracker.Business.csproj",
+      "msbuildProject": "../ExpenseTracker.Business/ExpenseTracker.Business.csproj"
+    },
+    "ExpenseTracker.Domain/1.0.0": {
+      "type": "project",
+      "path": "../ExpenseTracker.Domain/ExpenseTracker.Domain.csproj",
+      "msbuildProject": "../ExpenseTracker.Domain/ExpenseTracker.Domain.csproj"
+    },
+    "ExpenseTracker.Infrastructure/1.0.0": {
+      "type": "project",
+      "path": "../ExpenseTracker.Infrastructure/ExpenseTracker.Infrastructure.csproj",
+      "msbuildProject": "../ExpenseTracker.Infrastructure/ExpenseTracker.Infrastructure.csproj"
     }
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v3.1": [
+      "ExpenseTracker.Business >= 1.0.0",
+      "ExpenseTracker.Infrastructure >= 1.0.0",
       "Microsoft.EntityFrameworkCore.SqlServer >= 3.1.21",
       "Microsoft.EntityFrameworkCore.Sqlite >= 3.1.21",
       "Microsoft.EntityFrameworkCore.Tools >= 3.1.21",
@@ -8999,11 +9082,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\masters\\Asd\\ExpenseTracker\\ExpenseTracker\\ExpenseTracker.csproj",
+      "projectUniqueName": "D:\\masters\\ASD\\project\\ExpenseTracker\\ExpenseTracker\\ExpenseTracker.csproj",
       "projectName": "ExpenseTracker",
-      "projectPath": "D:\\masters\\Asd\\ExpenseTracker\\ExpenseTracker\\ExpenseTracker.csproj",
+      "projectPath": "D:\\masters\\ASD\\project\\ExpenseTracker\\ExpenseTracker\\ExpenseTracker.csproj",
       "packagesPath": "C:\\Users\\INOVA\\.nuget\\packages\\",
-      "outputPath": "D:\\masters\\Asd\\ExpenseTracker\\ExpenseTracker\\obj\\",
+      "outputPath": "D:\\masters\\ASD\\project\\ExpenseTracker\\ExpenseTracker\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -9021,7 +9104,14 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
-          "projectReferences": {}
+          "projectReferences": {
+            "D:\\masters\\ASD\\project\\ExpenseTracker\\ExpenseTracker.Business\\ExpenseTracker.Business.csproj": {
+              "projectPath": "D:\\masters\\ASD\\project\\ExpenseTracker\\ExpenseTracker.Business\\ExpenseTracker.Business.csproj"
+            },
+            "D:\\masters\\ASD\\project\\ExpenseTracker\\ExpenseTracker.Infrastructure\\ExpenseTracker.Infrastructure.csproj": {
+              "projectPath": "D:\\masters\\ASD\\project\\ExpenseTracker\\ExpenseTracker.Infrastructure\\ExpenseTracker.Infrastructure.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

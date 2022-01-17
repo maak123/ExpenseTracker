@@ -328,6 +328,11 @@ namespace ExpenseTracker.Infrastructure.Repositories
             GC.SuppressFinalize(this);
         }
 
+        public async Task CompleteAsync()
+        {
+            await context.SaveChangesAsync();
+        }
+
         private bool disposed = false;
         protected void Dispose(bool disposing)
         {

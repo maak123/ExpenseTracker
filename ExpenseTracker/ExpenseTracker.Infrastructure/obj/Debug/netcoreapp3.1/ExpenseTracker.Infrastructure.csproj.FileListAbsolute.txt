@@ -9,3 +9,14 @@ D:\masters\Asd\ExpenseTracker\ExpenseTracker.Infrastructure\obj\Debug\netcoreapp
 D:\masters\Asd\ExpenseTracker\ExpenseTracker.Infrastructure\bin\Debug\netcoreapp3.1\ExpenseTracker.Domain.dll
 D:\masters\Asd\ExpenseTracker\ExpenseTracker.Infrastructure\bin\Debug\netcoreapp3.1\ExpenseTracker.Domain.pdb
 D:\masters\Asd\ExpenseTracker\ExpenseTracker.Infrastructure\obj\Debug\netcoreapp3.1\ExpenseTracker.Infrastructure.csproj.CopyComplete
+D:\masters\ASD\project\ExpenseTracker\ExpenseTracker.Infrastructure\bin\Debug\netcoreapp3.1\ExpenseTracker.Infrastructure.deps.json
+D:\masters\ASD\project\ExpenseTracker\ExpenseTracker.Infrastructure\bin\Debug\netcoreapp3.1\ExpenseTracker.Infrastructure.dll
+D:\masters\ASD\project\ExpenseTracker\ExpenseTracker.Infrastructure\bin\Debug\netcoreapp3.1\ExpenseTracker.Infrastructure.pdb
+D:\masters\ASD\project\ExpenseTracker\ExpenseTracker.Infrastructure\bin\Debug\netcoreapp3.1\ExpenseTracker.Domain.dll
+D:\masters\ASD\project\ExpenseTracker\ExpenseTracker.Infrastructure\bin\Debug\netcoreapp3.1\ExpenseTracker.Domain.pdb
+D:\masters\ASD\project\ExpenseTracker\ExpenseTracker.Infrastructure\obj\Debug\netcoreapp3.1\ExpenseTracker.Infrastructure.csprojAssemblyReference.cache
+D:\masters\ASD\project\ExpenseTracker\ExpenseTracker.Infrastructure\obj\Debug\netcoreapp3.1\ExpenseTracker.Infrastructure.AssemblyInfoInputs.cache
+D:\masters\ASD\project\ExpenseTracker\ExpenseTracker.Infrastructure\obj\Debug\netcoreapp3.1\ExpenseTracker.Infrastructure.AssemblyInfo.cs
+D:\masters\ASD\project\ExpenseTracker\ExpenseTracker.Infrastructure\obj\Debug\netcoreapp3.1\ExpenseTracker.Infrastructure.csproj.CopyComplete
+D:\masters\ASD\project\ExpenseTracker\ExpenseTracker.Infrastructure\obj\Debug\netcoreapp3.1\ExpenseTracker.Infrastructure.dll
+D:\masters\ASD\project\ExpenseTracker\ExpenseTracker.Infrastructure\obj\Debug\netcoreapp3.1\ExpenseTracker.Infrastructure.pdb

@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using ExpenseTracker.Data;
-using ExpenseTracker.Domain.Models;
+using ExpenseTracker.Business.Core;
+using ExpenseTracker.Business.Resources;
 
 namespace ExpenseTracker.Controllers
 {
@@ -14,25 +14,25 @@ namespace ExpenseTracker.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly ExpenseTrackerContext _context;
+        private readonly IUserService _userService;
 
-        public UsersController(ExpenseTrackerContext context)
+        public UsersController(IUserService userService)
         {
-            _context = context;
+            _userService = userService;
         }
 
         // GET: api/Users
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUser()
+        public async Task<ActionResult<IEnumerable<UserResource>>> GetUser()
         {
-            return await _context.User.ToListAsync();
+            return Ok(await _userService.GetAllAsync());
         }
 
         // GET: api/Users/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUser(int id)
+        public async Task<ActionResult<UserResource>> GetUser(int id)
         {
-            var user = await _context.User.FindAsync(id);
+            var user = await _userService.GetByIdAsync(id);
 
             if (user == null)
             {
@@ -46,29 +46,23 @@ namespace ExpenseTracker.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(int id, User user)
+        public async Task<IActionResult> PutUser(int id, UserResource user)
         {
             if (id != user.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(user).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                var result = await _userService.EditAsync(user);
+
+                return Ok(result);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!UserExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+
+                throw;
             }
 
             return NoContent();
@@ -78,33 +72,22 @@ namespace ExpenseTracker.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<User>> PostUser(User user)
+        public async Task<ActionResult<UserResource>> PostUser(UserResource user)
         {
-            _context.User.Add(user);
-            await _context.SaveChangesAsync();
+
+            await _userService.CreateAsync(user);
 
             return CreatedAtAction("GetUser", new { id = user.Id }, user);
         }
 
         // DELETE: api/Users/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<User>> DeleteUser(int id)
+        public async Task<ActionResult<UserResource>> DeleteUser(int id)
         {
-            var user = await _context.User.FindAsync(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
 
-            _context.User.Remove(user);
-            await _context.SaveChangesAsync();
 
-            return user;
+            return Ok(await _userService.RemoveAsync(id));
         }
 
-        private bool UserExists(int id)
-        {
-            return _context.User.Any(e => e.Id == id);
-        }
     }
 }

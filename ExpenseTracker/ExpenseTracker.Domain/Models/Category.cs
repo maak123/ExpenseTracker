@@ -8,8 +8,8 @@ namespace ExpenseTracker.Domain.Models
     {
         public int Id { get; set; }
         public double Amount { get; set; }
-        public string title { get; set; }
-        public string icon { get; set; }
+        public string Title { get; set; }
+        public string Icon { get; set; }
 
     }
 }

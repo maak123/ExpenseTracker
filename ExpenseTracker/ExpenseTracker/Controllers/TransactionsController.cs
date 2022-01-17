@@ -5,8 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using ExpenseTracker.Data;
 using ExpenseTracker.Domain.Models;
+using ExpenseTracker.Business.Core;
+using ExpenseTracker.Business.Resources;
 
 namespace ExpenseTracker.Controllers
 {
@@ -14,25 +15,26 @@ namespace ExpenseTracker.Controllers
     [ApiController]
     public class TransactionsController : ControllerBase
     {
-        private readonly ExpenseTrackerContext _context;
+        private readonly ITransactionService _transactionService;
 
-        public TransactionsController(ExpenseTrackerContext context)
+        public TransactionsController(ITransactionService transactionService)
         {
-            _context = context;
+            _transactionService = transactionService;
         }
 
         // GET: api/Transactions
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Transaction>>> GetTransaction()
+        public async Task<ActionResult<IEnumerable<Transactions>>> GetTransaction()
         {
-            return await _context.Transaction.ToListAsync();
+            return Ok(await _transactionService.GetAllAsync());
         }
 
+       
         // GET: api/Transactions/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Transaction>> GetTransaction(int id)
+        public async Task<ActionResult<TransactionResource>> GetTransaction(int id)
         {
-            var transaction = await _context.Transaction.FindAsync(id);
+            var transaction = await _transactionService.GetByIdAsync(id);
 
             if (transaction == null)
             {
@@ -46,29 +48,23 @@ namespace ExpenseTracker.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTransaction(int id, Transaction transaction)
+        public async Task<IActionResult> PutTransaction(int id, TransactionResource transaction)
         {
             if (id != transaction.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(transaction).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                var result = await _transactionService.EditAsync(transaction);
+
+                return Ok(result);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!TransactionExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+
+                throw;
             }
 
             return NoContent();
@@ -78,33 +74,22 @@ namespace ExpenseTracker.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Transaction>> PostTransaction(Transaction transaction)
+        public async Task<ActionResult<TransactionResource>> PostTransaction(TransactionResource transaction)
         {
-            _context.Transaction.Add(transaction);
-            await _context.SaveChangesAsync();
+
+            await _transactionService.CreateAsync(transaction);
 
             return CreatedAtAction("GetTransaction", new { id = transaction.Id }, transaction);
         }
 
         // DELETE: api/Transactions/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Transaction>> DeleteTransaction(int id)
+        public async Task<ActionResult<TransactionResource>> DeleteTransaction(int id)
         {
-            var transaction = await _context.Transaction.FindAsync(id);
-            if (transaction == null)
-            {
-                return NotFound();
-            }
 
-            _context.Transaction.Remove(transaction);
-            await _context.SaveChangesAsync();
 
-            return transaction;
+            return Ok(await _transactionService.RemoveAsync(id));
         }
 
-        private bool TransactionExists(int id)
-        {
-            return _context.Transaction.Any(e => e.Id == id);
-        }
     }
 }
