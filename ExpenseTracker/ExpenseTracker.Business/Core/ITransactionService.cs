@@ -8,10 +8,10 @@ namespace ExpenseTracker.Business.Core
 {
     public interface ITransactionService
     {
-        Task<IEnumerable<TransactionResource>> GetAllAsync();
+        Task<IEnumerable<TransactionResource>> GetAllAsync(int userId);
         Task<TransactionResource> GetByIdAsync(int id);
-        Task<TransactionResource> CreateAsync(TransactionResource device);
-        Task<TransactionResource> EditAsync(TransactionResource device);
+        Task<TransactionResource> CreateAsync(TransactionAddUpdateResource device);
+        Task<TransactionResource> EditAsync(TransactionAddUpdateResource device);
         Task<Boolean> RemoveAsync(int id);
         Task<IEnumerable<TransactionResource>> SearchAsync(string hint);
     }

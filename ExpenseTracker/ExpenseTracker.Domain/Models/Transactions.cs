@@ -13,6 +13,7 @@ namespace ExpenseTracker.Domain.Models
         [DataType(DataType.DateTime)]
         public DateTime Date { get; set; }
         public virtual Category Category { get; set; }
+        public virtual User User { get; set; }
 
     }
 }

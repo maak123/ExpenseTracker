@@ -10,6 +10,5 @@ namespace ExpenseTracker.Business.Resources
         public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public virtual List<Transaction> Transaction { get; set; }
     }
 }

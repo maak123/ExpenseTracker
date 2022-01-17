@@ -23,32 +23,17 @@ namespace ExpenseTracker.Controllers
         }
 
         // GET: api/Transactions
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Transactions>>> GetTransaction()
+        [HttpGet("{userId}")]
+        public async Task<ActionResult<IEnumerable<Transactions>>> GetTransaction(int userId)
         {
-            return Ok(await _transactionService.GetAllAsync());
-        }
-
-       
-        // GET: api/Transactions/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<TransactionResource>> GetTransaction(int id)
-        {
-            var transaction = await _transactionService.GetByIdAsync(id);
-
-            if (transaction == null)
-            {
-                return NotFound();
-            }
-
-            return transaction;
+            return Ok(await _transactionService.GetAllAsync(userId));
         }
 
         // PUT: api/Transactions/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTransaction(int id, TransactionResource transaction)
+        public async Task<IActionResult> PutTransaction(int id, TransactionAddUpdateResource transaction)
         {
             if (id != transaction.Id)
             {
@@ -74,12 +59,12 @@ namespace ExpenseTracker.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<TransactionResource>> PostTransaction(TransactionResource transaction)
+        public async Task<ActionResult<TransactionResource>> PostTransaction(TransactionAddUpdateResource transaction)
         {
 
-            await _transactionService.CreateAsync(transaction);
+            var result = await _transactionService.CreateAsync(transaction);
 
-            return CreatedAtAction("GetTransaction", new { id = transaction.Id }, transaction);
+            return Ok(result);
         }
 
         // DELETE: api/Transactions/5

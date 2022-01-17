@@ -51,6 +51,8 @@ namespace ExpenseTracker
                 mc.CreateMap<Transactions, TransactionResource>();
                 mc.CreateMap<UserResource, User>();
                 mc.CreateMap<User, UserResource>();
+                mc.CreateMap<TransactionAddUpdateResource, Transactions>();
+                mc.CreateMap<Transactions, TransactionAddUpdateResource>();
 
             });
 

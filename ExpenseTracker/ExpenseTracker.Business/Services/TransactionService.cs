@@ -13,22 +13,32 @@ namespace ExpenseTracker.Business.Services
     public class TransactionService : ITransactionService
     {
         private readonly ITransactionRepository _TransactionRepository;
+        private readonly ICategoryRepository _ICategoryRepository;
+        private readonly IUserRepository _IUserRepository;
+
         private readonly IMapper mapper;
 
         public TransactionService(
             ITransactionRepository TransactionRepository,
-            IMapper mapper
+            ICategoryRepository CategoryRepository,
+            IUserRepository UserRepository,
+        IMapper mapper
             )
         {
             _TransactionRepository = TransactionRepository;
+            _ICategoryRepository = CategoryRepository;
+            _IUserRepository = UserRepository;
             this.mapper = mapper;
 
         }
-        public async Task<TransactionResource> CreateAsync(TransactionResource transaction)
+        public async Task<TransactionResource> CreateAsync(TransactionAddUpdateResource transaction)
         {
             try
             {
-                var updatedDetails = mapper.Map<TransactionResource, Transactions>(transaction);
+                var updatedDetails = mapper.Map<TransactionAddUpdateResource, Transactions>(transaction);
+                updatedDetails.Category = await _ICategoryRepository.FindAsync(c=>c.Id == transaction.CategoryId);
+                updatedDetails.User = await _IUserRepository.FindAsync(c => c.Id == transaction.UserId);
+
                 var result = await _TransactionRepository.AddAsync(updatedDetails);
                 await _TransactionRepository.CompleteAsync();
                 return mapper.Map<Transactions, TransactionResource>(result);
@@ -39,11 +49,13 @@ namespace ExpenseTracker.Business.Services
             }
         }
 
-        public async Task<TransactionResource> EditAsync(TransactionResource Transaction)
+        public async Task<TransactionResource> EditAsync(TransactionAddUpdateResource Transaction)
         {
             try
             {
-                var updatedDetails = mapper.Map<TransactionResource, Transactions>(Transaction);
+                var updatedDetails = mapper.Map<TransactionAddUpdateResource, Transactions>(Transaction);
+                updatedDetails.Category = await _ICategoryRepository.FindAsync(c => c.Id == Transaction.CategoryId);
+                updatedDetails.User = await _IUserRepository.FindAsync(c => c.Id == Transaction.UserId);
 
                 var result = await _TransactionRepository.UpdateAsync(updatedDetails, updatedDetails.Id);
                 await _TransactionRepository.CompleteAsync();
@@ -56,11 +68,11 @@ namespace ExpenseTracker.Business.Services
             }
         }
 
-        public async Task<IEnumerable<TransactionResource>> GetAllAsync()
+        public async Task<IEnumerable<TransactionResource>> GetAllAsync(int userId)
         {
             try
             {
-                IEnumerable<Transactions> Transaction = await _TransactionRepository.GetAllAsync();
+                var Transaction = await _TransactionRepository.FindByAllIncludingAsync(t=>t.User.Id== userId, t=>t.Category);
                 return mapper.Map<IEnumerable<Transactions>, IEnumerable<TransactionResource>>(Transaction);
             }
             catch (Exception e)
