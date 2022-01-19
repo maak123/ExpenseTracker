@@ -10,6 +10,8 @@ import DashboardPage from './views/Dashboard/Dashboard';
 import UserProfile from './views/UserProfile/UserProfile';
 import TableList from './views/TableList/TableList';
 import Typography from './views/Typography/Typography';
+import Categories from './views/Categories/Categories';
+import Transactions from './views/Transactions/Transactions';
 // import Icons from './views/Icons/Icons';
 // import Maps from './views/Maps/Maps';
 // import NotificationsPage from './views/Notifications/Notifications';
@@ -45,6 +47,22 @@ const dashboardRoutes = [
     rtlName: 'طباعة',
     icon: LibraryBooks,
     component: Typography,
+    layout: '/admin'
+  },
+  {
+    path: '/category',
+    name: 'Category',
+    rtlName: 'طباعة',
+    icon: LibraryBooks,
+    component: Categories,
+    layout: '/admin'
+  },
+  {
+    path: '/transaction',
+    name: 'Tranaction',
+    rtlName: 'طباعة',
+    icon: 'content_paste',
+    component: Transactions,
     layout: '/admin'
   },
   // {
