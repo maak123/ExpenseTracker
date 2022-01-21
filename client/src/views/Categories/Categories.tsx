@@ -236,7 +236,7 @@ function Categories(props: any) {
         onClick={handleClickOpen}
         className={classes.button +' '+classes.rightAlign} 
       >
-        Add Category
+        {'Add Category'}
       </Button>
       </div>
             <CategoriesTable
@@ -248,7 +248,9 @@ function Categories(props: any) {
         </Card>
       </GridItem>
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">Add Category</DialogTitle>
+        <DialogTitle id="form-dialog-title">
+        {values.id ? 'Update Category':'Add Category'}
+          </DialogTitle>
         <DialogContent>
  
           <div className="mt-2">

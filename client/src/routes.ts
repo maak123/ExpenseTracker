@@ -26,30 +26,6 @@ const dashboardRoutes = [
     layout: '/admin'
   },
   {
-    path: '/user',
-    name: 'User Profile',
-    rtlName: 'ملف تعريفي للمستخدم',
-    icon: Person,
-    component: UserProfile,
-    layout: '/admin'
-  },
-  {
-    path: '/table',
-    name: 'Table List',
-    rtlName: 'قائمة الجدول',
-    icon: 'content_paste',
-    component: TableList,
-    layout: '/admin'
-  },
-  {
-    path: '/typography',
-    name: 'Typography',
-    rtlName: 'طباعة',
-    icon: LibraryBooks,
-    component: Typography,
-    layout: '/admin'
-  },
-  {
     path: '/category',
     name: 'Category',
     rtlName: 'طباعة',

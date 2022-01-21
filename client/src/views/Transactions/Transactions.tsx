@@ -329,7 +329,7 @@ function Transactions(props: any) {
         onClose={handleClose}
         aria-labelledby="form-dialog-title"
       >
-        <DialogTitle id="form-dialog-title">Add Transaction</DialogTitle>
+        <DialogTitle id="form-dialog-title">{values.id ? 'Update Transaction':'Add Transaction'}</DialogTitle>
         <DialogContent>
           <div className="mt-2">
             <FormControl className={classes.textFieldGap} fullWidth>
