@@ -12,5 +12,6 @@ namespace ExpenseTracker.Business.Resources
         public double Amount { get; set; }
         public string Note { get; set; }
         public DateTime Date { get; set; }
+
     }
 }

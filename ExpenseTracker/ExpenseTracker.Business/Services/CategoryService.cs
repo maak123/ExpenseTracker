@@ -13,14 +13,17 @@ namespace ExpenseTracker.Business.Services
     public class CategoryService : ICategoryService
     {
         private readonly ICategoryRepository _CategoryRepository;
+        private readonly ITransactionRepository _TransactionRepository;
         private readonly IMapper mapper;
 
         public CategoryService(
             ICategoryRepository CategoryRepository,
+            ITransactionRepository TransactionRepository,
             IMapper mapper
             )
         {
             _CategoryRepository = CategoryRepository;
+            _TransactionRepository = TransactionRepository;
             this.mapper = mapper;
 
         }
@@ -81,6 +84,42 @@ namespace ExpenseTracker.Business.Services
                 throw;
             }
         }
+
+        public async Task<IEnumerable<CategoryTransactionResource>> GetUserCategoryDetailsAsync(int id)
+        {
+            try
+            {
+                var Transaction = await _TransactionRepository.FindByAllIncludingAsync(t => t.User.Id == id, t => t.Category);
+
+                var CategoryList = await _CategoryRepository.GetAllAsync();
+                var CategoryTransactions = new List<CategoryTransactionResource>();
+                foreach (var item in CategoryList)
+                {
+                    var transactionsofCategory = await _TransactionRepository.FindByAllIncludingAsync(t => t.User.Id == id && t.Category.Id == item.Id);
+                    var sum = 0.0;
+                    foreach (var transaction in transactionsofCategory)
+                    {
+                        sum += transaction.Amount;
+                    }
+                    CategoryTransactionResource transction = new CategoryTransactionResource
+                    {
+                        Id = item.Id,
+                        Title = item.Title,
+                        Amount = item.Amount,
+                        Icon = item.Icon,
+                        TransactionsTotal = sum
+                    };
+                    CategoryTransactions.Add(transction);
+                }
+                return CategoryTransactions;
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+        }
+        
+
 
         public async Task<bool> RemoveAsync(int id)
         {

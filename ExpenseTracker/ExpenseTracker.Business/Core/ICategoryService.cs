@@ -10,6 +10,7 @@ namespace ExpenseTracker.Business.Core
     {
         Task<IEnumerable<CategoryResource>> GetAllAsync();
         Task<CategoryResource> GetByIdAsync(int id);
+        Task<IEnumerable<CategoryTransactionResource>> GetUserCategoryDetailsAsync(int id);
         Task<CategoryResource> CreateAsync(CategoryResource device);
         Task<CategoryResource> EditAsync(CategoryResource device);
         Task<Boolean> RemoveAsync(int id);

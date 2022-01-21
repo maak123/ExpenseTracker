@@ -42,6 +42,20 @@ namespace ExpenseTracker.Controllers
             return category;
         }
 
+        // GET: api/UserCategoryDetails/5
+        [HttpGet("GetUserCategoryDetails/{userId}")]
+        public async Task<ActionResult<IEnumerable<CategoryTransactionResource>>> GetUserCategoryDetails(int userId)
+        {
+            var category = await _categoryService.GetUserCategoryDetailsAsync(userId);
+
+            if (category == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(category);
+        }
+
         // PUT: api/Categories/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
