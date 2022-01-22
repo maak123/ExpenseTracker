@@ -1,41 +1,30 @@
-import React from 'react';
+import React, {useEffect,useState} from 'react';
 // react plugin for creating charts
 import ChartistGraph from 'react-chartist';
 // @material-ui/core
 import withStyles from '@material-ui/core/styles/withStyles';
 import Icon from '@material-ui/core/Icon';
+
+
 // @material-ui/icons
 import Store from '@material-ui/icons/Store';
-import Warning from '@material-ui/icons/Warning';
 import DateRange from '@material-ui/icons/DateRange';
 import LocalOffer from '@material-ui/icons/LocalOffer';
 import Update from '@material-ui/icons/Update';
-import ArrowUpward from '@material-ui/icons/ArrowUpward';
-import AccessTime from '@material-ui/icons/AccessTime';
 import Accessibility from '@material-ui/icons/Accessibility';
-import BugReport from '@material-ui/icons/BugReport';
-import Code from '@material-ui/icons/Code';
-import Cloud from '@material-ui/icons/Cloud';
+
 // core components
 import GridItem from '../../components/Grid/GridItem';
 import GridContainer from '../../components/Grid/GridContainer';
 import Table from '../../components/Table/Table';
-import Tasks from '../../components/Tasks/Tasks';
-import CustomTabs from '../../components/CustomTabs/CustomTabs';
-import Danger from '../../components/Typography/Danger';
 import Card from '../../components/Card/Card';
 import CardHeader from '../../components/Card/CardHeader';
 import CardIcon from '../../components/Card/CardIcon';
 import CardBody from '../../components/Card/CardBody';
 import CardFooter from '../../components/Card/CardFooter';
-
-import { bugs, website, server } from '../../variables/general';
-
-import {
-  dailySalesChart,
-  emailsSubscriptionChart,
-  completedTasksChart
-} from '../../variables/charts';
+import {userId} from '../../config/core.config'
+import { getFullUrl, getHeader } from "../../helpers/callApi.helpers";
+import DashboardTable from "./DashboardTable"
 
 import dashboardStyle from '../../assets/jss/material-dashboard-react/views/dashboardStyle';
 
@@ -47,93 +36,91 @@ interface State {
   value: number;
 }
 
-class Dashboard extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      value: 0
+function Dashboard (props: any)  {
+  const { classes } = props;
+  const [categories, setCategories] = useState([]);
+  const [totalExpense, settotalExpense] = useState(0);
+  const [totalBudget, settotalBudget] = useState(20000);
+  const fetchCategoriesForUser = () => {
+    const options = {
+      method: "GET",
+      headers: new Headers({ "content-type": "application/json" }),
+      RequestMode: "cors",
     };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleChangeIndex = this.handleChangeIndex.bind(this);
-  }
-  handleChange = (event: any, value: number) => {
-    this.setState({ value });
-  }
+    fetch(getFullUrl("Categories/GetUserCategoryDetails") +'/'+ userId, options)
+      .then((response: any) => {
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data)
+        const tableTransactions =data.map((item: any)=>{
+         return{
+          ...item,
+          amount : item.amount.toFixed(2),
+          transactionsTotal:item.transactionsTotal.toFixed(2)
+         }
+        })
 
-  handleChangeIndex = (index: number) => {
-    this.setState({ value: index });
-  }
+        settotalExpense((tableTransactions.reduce((n, {transactionsTotal}) => n + (+transactionsTotal), 0)).toFixed(2))
+        setCategories(tableTransactions)
+      });
+  };
 
-  render() {
-    const { classes } = this.props;
+  useEffect(() => {
+    fetchCategoriesForUser()
+  }, []);
+
+
+
+
+
+
+
     return (
       <div>
         <GridContainer>
-          <GridItem xs={12} sm={6} md={3}>
-            <Card>
-              <CardHeader color="warning" stats={true} icon={true}>
-                <CardIcon color="warning">
-                  <Icon>content_copy</Icon>
-                </CardIcon>
-                <p className={classes.cardCategory}>Used Space</p>
-                <h3 className={classes.cardTitle}>
-                  49/50 <small>GB</small>
-                </h3>
-              </CardHeader>
-              <CardFooter stats={true}>
-                <div className={classes.stats}>
-                  <Danger>
-                    <Warning />
-                  </Danger>
-                  <a href="#pablo" onClick={e => e.preventDefault()}>
-                    Get more space
-                  </a>
-                </div>
-              </CardFooter>
-            </Card>
-          </GridItem>
-          <GridItem xs={12} sm={6} md={3}>
+          <GridItem xs={12} sm={6} md={4}>
             <Card>
               <CardHeader color="success" stats={true} icon={true}>
                 <CardIcon color="success">
                   <Store />
                 </CardIcon>
-                <p className={classes.cardCategory}>Revenue</p>
-                <h3 className={classes.cardTitle}>$34,245</h3>
+                <p className={classes.cardCategory}>Budget</p>
+                <h3 className={classes.cardTitle}>{totalBudget}</h3>
               </CardHeader>
               <CardFooter stats={true}>
                 <div className={classes.stats}>
                   <DateRange />
-                  Last 24 Hours
+                  Monthly
                 </div>
               </CardFooter>
             </Card>
           </GridItem>
-          <GridItem xs={12} sm={6} md={3}>
+          <GridItem xs={12} sm={6} md={4}>
             <Card>
-              <CardHeader color="danger" stats={true} icon={true}>
-                <CardIcon color="danger">
-                  <Icon>info_outline</Icon>
+              <CardHeader color="warning" stats={true} icon={true}>
+                <CardIcon color="warning">
+                  <Icon>call_received</Icon>
                 </CardIcon>
-                <p className={classes.cardCategory}>Fixed Issues</p>
-                <h3 className={classes.cardTitle}>75</h3>
+                <p className={classes.cardCategory}>Categories</p>
+                <h3 className={classes.cardTitle}>{categories.length}</h3>
               </CardHeader>
               <CardFooter stats={true}>
                 <div className={classes.stats}>
                   <LocalOffer />
-                  Tracked from Github
+                  Tracked from Expense Tracker
                 </div>
               </CardFooter>
             </Card>
           </GridItem>
-          <GridItem xs={12} sm={6} md={3}>
+          <GridItem xs={12} sm={6} md={4}>
             <Card>
               <CardHeader color="info" stats={true} icon={true}>
                 <CardIcon color="info">
                   <Accessibility />
                 </CardIcon>
-                <p className={classes.cardCategory}>Followers</p>
-                <h3 className={classes.cardTitle}>+245</h3>
+                <p className={classes.cardCategory}>Your wallet</p>
+                <h3 className={classes.cardTitle}>{totalBudget-totalExpense}</h3>
               </CardHeader>
               <CardFooter stats={true}>
                 <div className={classes.stats}>
@@ -143,145 +130,21 @@ class Dashboard extends React.Component<Props, State> {
               </CardFooter>
             </Card>
           </GridItem>
-        </GridContainer>
-        <GridContainer>
-          <GridItem xs={12} sm={12} md={4}>
-            <Card chart={true}>
-              <CardHeader color="success">
-                <ChartistGraph
-                  className="ct-chart"
-                  data={dailySalesChart.data}
-                  type="Line"
-                  options={dailySalesChart.options}
-                  // listener={dailySalesChart.animation}
-                />
-              </CardHeader>
-              <CardBody>
-                <h4 className={classes.cardTitle}>Daily Sales</h4>
-                <p className={classes.cardCategory}>
-                  <span className={classes.successText}>
-                    <ArrowUpward className={classes.upArrowCardCategory} /> 55%
-                  </span>{' '}
-                  increase in today sales.
-                </p>
-              </CardBody>
-              <CardFooter chart={true}>
-                <div className={classes.stats}>
-                  <AccessTime /> updated 4 minutes ago
-                </div>
-              </CardFooter>
-            </Card>
-          </GridItem>
-          <GridItem xs={12} sm={12} md={4}>
-            <Card chart={true}>
-              <CardHeader color="warning">
-                <ChartistGraph
-                  className="ct-chart"
-                  data={emailsSubscriptionChart.data}
-                  type="Bar"
-                  options={emailsSubscriptionChart.options}
-                  // responsiveOptions={emailsSubscriptionChart.responsiveOptions}
-                  // listener={emailsSubscriptionChart.animation}
-                />
-              </CardHeader>
-              <CardBody>
-                <h4 className={classes.cardTitle}>Email Subscriptions</h4>
-                <p className={classes.cardCategory}>
-                  Last Campaign Performance
-                </p>
-              </CardBody>
-              <CardFooter chart={true}>
-                <div className={classes.stats}>
-                  <AccessTime /> campaign sent 2 days ago
-                </div>
-              </CardFooter>
-            </Card>
-          </GridItem>
-          <GridItem xs={12} sm={12} md={4}>
-            <Card chart={true}>
-              <CardHeader color="danger">
-                <ChartistGraph
-                  className="ct-chart"
-                  data={completedTasksChart.data}
-                  type="Line"
-                  options={completedTasksChart.options}
-                  // listener={completedTasksChart.animation}
-                />
-              </CardHeader>
-              <CardBody>
-                <h4 className={classes.cardTitle}>Completed Tasks</h4>
-                <p className={classes.cardCategory}>
-                  Last Campaign Performance
-                </p>
-              </CardBody>
-              <CardFooter chart={true}>
-                <div className={classes.stats}>
-                  <AccessTime /> campaign sent 2 days ago
-                </div>
-              </CardFooter>
-            </Card>
-          </GridItem>
-        </GridContainer>
-        <GridContainer>
-          <GridItem xs={12} sm={12} md={6}>
-            <CustomTabs
-              title="Tasks:"
-              headerColor="primary"
-              tabs={[
-                {
-                  tabName: 'Bugs',
-                  tabIcon: BugReport,
-                  tabContent: (
-                    <Tasks
-                      checkedIndexes={[0, 3]}
-                      tasksIndexes={[0, 1, 2, 3]}
-                      tasks={bugs}
-                    />
-                  )
-                },
-                {
-                  tabName: 'Website',
-                  tabIcon: Code,
-                  tabContent: (
-                    <Tasks
-                      checkedIndexes={[0]}
-                      tasksIndexes={[0, 1]}
-                      tasks={website}
-                    />
-                  )
-                },
-                {
-                  tabName: 'Server',
-                  tabIcon: Cloud,
-                  tabContent: (
-                    <Tasks
-                      checkedIndexes={[1]}
-                      tasksIndexes={[0, 1, 2]}
-                      tasks={server}
-                    />
-                  )
-                }
-              ]}
-            />
-          </GridItem>
-          <GridItem xs={12} sm={12} md={6}>
+
+
+          <GridItem xs={12} sm={12} md={12}>
             <Card>
               <CardHeader color="warning">
-                <h4 className={classes.cardTitleWhite}>Employees Stats</h4>
+                <h4 className={classes.cardTitleWhite}>Transaction Stats</h4>
                 <p className={classes.cardCategoryWhite}>
-                  New employees on 15th September, 2016
+         
                 </p>
               </CardHeader>
               <CardBody>
-                <Table
-                  tableHeaderColor="warning"
-                  tableHead={['ID', 'Name', 'Salary', 'Country']}
-                  tableData={[
-                    ['1', 'Dakota Rice', '$36,738', 'Niger'],
-                    ['2', 'Minerva Hooper', '$23,789', 'Curaçao'],
-                    ['3', 'Sage Rodriguez', '$56,142', 'Netherlands'],
-                    ['4', 'Philip Chaney', '$38,735', 'Korea, South']
-                  ]}
+                <DashboardTable
+                  tableData={
+                    categories
+                  }
                 />
               </CardBody>
             </Card>
@@ -290,7 +153,7 @@ class Dashboard extends React.Component<Props, State> {
       </div>
     );
   }
-}
+
 
 // Dashboard.propTypes = {
 //   classes: PropTypes.object.isRequired

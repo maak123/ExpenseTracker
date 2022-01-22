@@ -1,6 +1,6 @@
 
 
-const baseUrl = "https://localhost:44359/api";
+const baseUrl = "https://localhost:5001/api";
 
 const ReactAppVerNO = "V0.10.6";
 
