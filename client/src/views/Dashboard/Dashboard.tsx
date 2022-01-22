@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect,useState} from 'react';
 // react plugin for creating charts
 import ChartistGraph from 'react-chartist';
 // @material-ui/core
@@ -8,36 +8,23 @@ import Icon from '@material-ui/core/Icon';
 
 // @material-ui/icons
 import Store from '@material-ui/icons/Store';
-import Warning from '@material-ui/icons/Warning';
 import DateRange from '@material-ui/icons/DateRange';
 import LocalOffer from '@material-ui/icons/LocalOffer';
 import Update from '@material-ui/icons/Update';
-import ArrowUpward from '@material-ui/icons/ArrowUpward';
-import AccessTime from '@material-ui/icons/AccessTime';
 import Accessibility from '@material-ui/icons/Accessibility';
-import BugReport from '@material-ui/icons/BugReport';
-import Code from '@material-ui/icons/Code';
-import Cloud from '@material-ui/icons/Cloud';
+
 // core components
 import GridItem from '../../components/Grid/GridItem';
 import GridContainer from '../../components/Grid/GridContainer';
 import Table from '../../components/Table/Table';
-import Tasks from '../../components/Tasks/Tasks';
-import CustomTabs from '../../components/CustomTabs/CustomTabs';
-import Danger from '../../components/Typography/Danger';
 import Card from '../../components/Card/Card';
 import CardHeader from '../../components/Card/CardHeader';
 import CardIcon from '../../components/Card/CardIcon';
 import CardBody from '../../components/Card/CardBody';
 import CardFooter from '../../components/Card/CardFooter';
-
-import { bugs, website, server } from '../../variables/general';
-
-import {
-  dailySalesChart,
-  emailsSubscriptionChart,
-  completedTasksChart
-} from '../../variables/charts';
+import {userId} from '../../config/core.config'
+import { getFullUrl, getHeader } from "../../helpers/callApi.helpers";
+import DashboardTable from "./DashboardTable"
 
 import dashboardStyle from '../../assets/jss/material-dashboard-react/views/dashboardStyle';
 
@@ -49,25 +36,46 @@ interface State {
   value: number;
 }
 
-class Dashboard extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      value: 0
+function Dashboard (props: any)  {
+  const { classes } = props;
+  const [categories, setCategories] = useState([]);
+  const [totalExpense, settotalExpense] = useState(0);
+  const [totalBudget, settotalBudget] = useState(20000);
+  const fetchCategoriesForUser = () => {
+    const options = {
+      method: "GET",
+      headers: new Headers({ "content-type": "application/json" }),
+      RequestMode: "cors",
     };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleChangeIndex = this.handleChangeIndex.bind(this);
-  }
-  handleChange = (event: any, value: number) => {
-    this.setState({ value });
-  }
+    fetch(getFullUrl("Categories/GetUserCategoryDetails") +'/'+ userId, options)
+      .then((response: any) => {
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data)
+        const tableTransactions =data.map((item: any)=>{
+         return{
+          ...item,
+          amount : item.amount.toFixed(2),
+          transactionsTotal:item.transactionsTotal.toFixed(2)
+         }
+        })
 
-  handleChangeIndex = (index: number) => {
-    this.setState({ value: index });
-  }
+        settotalExpense((tableTransactions.reduce((n, {transactionsTotal}) => n + (+transactionsTotal), 0)).toFixed(2))
+        setCategories(tableTransactions)
+      });
+  };
 
-  render() {
-    const { classes } = this.props;
+  useEffect(() => {
+    fetchCategoriesForUser()
+  }, []);
+
+
+
+
+
+
+
     return (
       <div>
         <GridContainer>
@@ -78,7 +86,7 @@ class Dashboard extends React.Component<Props, State> {
                   <Store />
                 </CardIcon>
                 <p className={classes.cardCategory}>Budget</p>
-                <h3 className={classes.cardTitle}>$34,245</h3>
+                <h3 className={classes.cardTitle}>{totalBudget}</h3>
               </CardHeader>
               <CardFooter stats={true}>
                 <div className={classes.stats}>
@@ -95,7 +103,7 @@ class Dashboard extends React.Component<Props, State> {
                   <Icon>call_received</Icon>
                 </CardIcon>
                 <p className={classes.cardCategory}>Categories</p>
-                <h3 className={classes.cardTitle}>75</h3>
+                <h3 className={classes.cardTitle}>{categories.length}</h3>
               </CardHeader>
               <CardFooter stats={true}>
                 <div className={classes.stats}>
@@ -112,7 +120,7 @@ class Dashboard extends React.Component<Props, State> {
                   <Accessibility />
                 </CardIcon>
                 <p className={classes.cardCategory}>Your wallet</p>
-                <h3 className={classes.cardTitle}>$2450</h3>
+                <h3 className={classes.cardTitle}>{totalBudget-totalExpense}</h3>
               </CardHeader>
               <CardFooter stats={true}>
                 <div className={classes.stats}>
@@ -133,15 +141,10 @@ class Dashboard extends React.Component<Props, State> {
                 </p>
               </CardHeader>
               <CardBody>
-                <Table
-                  tableHeaderColor="warning"
-                  tableHead={['ID', 'Category','limit', 'Total']}
-                  tableData={[
-                    ['1', 'Food','$6,738', '$6,738'],
-                    ['2', 'Leisure','$6,738', '$3,789'],
-                    ['3', 'Other','$6,738', '$6,142' ],
-                    ['4', 'Bills','$6,738', '$8,735']
-                  ]}
+                <DashboardTable
+                  tableData={
+                    categories
+                  }
                 />
               </CardBody>
             </Card>
@@ -150,7 +153,7 @@ class Dashboard extends React.Component<Props, State> {
       </div>
     );
   }
-}
+
 
 // Dashboard.propTypes = {
 //   classes: PropTypes.object.isRequired
